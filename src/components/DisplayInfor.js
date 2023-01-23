@@ -1,57 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import './DisplayInfor.scss'
 import logo from './../logo.svg'
 
-class DisplayInfor extends React.Component {
+const DisplayInfor = (props) => {
+    const { listUsers, handleDeleteUser } = props;
+    //console.log(this.props.listUsers);
+    const [hideShowList, setHideShowList] = useState(true);
 
-    state = {
-        isShowList: true
+    const handleShowHide = () => {
+        setHideShowList(!hideShowList);
     }
 
-    handleShowHide = (event) => {
-        this.setState({
-            isShowList: !this.state.isShowList
-        })
-    }
-    render() {
-        const { listUsers } = this.props;
-        //console.log(this.props.listUsers);
+    return (
+        <div className="display-infor-container">
+            <span onClick={() => handleShowHide()}>
+                {hideShowList === true ? "Hide the List" : "Show the List"}
+            </span>
 
-        return (
-            <div className="display-infor-container">
-                {/* <img src={logo} /> */}
+            {hideShowList &&
                 <div>
-                    <span onClick={(event) => { this.handleShowHide(event) }}>
-                        {this.state.isShowList === true ? "Hide User List" : "Show User List"}
-
-                    </span>
-                </div>
-                {this.state.isShowList &&
-                    <div>
-                        {
-                            listUsers.map((user) => {
-                                return (
-                                    <div key={user.id} className={user.age > 18 ? "green" : "red"}>
-                                        <div>
-                                            <div>My name is {user.name} </div>
-                                            <div>My age is {user.age}</div>
-                                        </div>
-                                        <div>
-                                            <button onClick={() => this.props.handleDeleteUser(user.id)}>Delete</button>
-                                        </div>
-
-                                        <hr />
+                    {
+                        listUsers.map((user) => {
+                            return (
+                                <div key={user.id} className={user.age > 18 ? "green" : "red"}>
+                                    <div>
+                                        <div>My name is {user.name} </div>
+                                        <div>My age is {user.age}</div>
                                     </div>
-                                )
-                            })
-                        }
+                                    <div>
+                                        <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                                    </div>
 
-                    </div>
-                }
-            </div>
-        )
+                                    <hr />
+                                </div>
+                            )
+                        })
+                    }
 
-    }
+                </div>
+            }
+        </div>
+    )
+
 }
 
 export default DisplayInfor;
